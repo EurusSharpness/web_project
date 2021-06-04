@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -6,8 +6,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
-import { auth } from "./components/firebase";
-
+import {auth} from "./firebase";
 
 
 export function App(props) {
@@ -19,14 +18,13 @@ export function App(props) {
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(u => {
+    return auth.onAuthStateChanged(u => {
       if (u) {
         setUser(u);
       } else {
         props.history.push("/");
       }
     });
-    return unsubscribe;
   }, [props.history]);
 
   const handleSignOut = () => {

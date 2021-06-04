@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {auth, db} from "./firebase";
+import {auth} from "./firebase";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -73,17 +73,8 @@ export function SignIn(props) {
                             Sign In
                         </Button>
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginTop: "30px",
-                            alignItems: "center"
-                        }}
-                    >
-                        <div>
-                            Forgot your password? <Link to="/resetpassword">Reset password!</Link>
-                        </div>
+                    <div>
+                        Forgot your password? <Link to="/resetpassword">Reset password!</Link>
                     </div>
                 </Paper>
             </div>
@@ -156,6 +147,9 @@ export function SignUp(props) {
                             Sign Up
                         </Button>
                     </div>
+                    <div>
+                        Forgot your password? <Link to="/resetpassword">Reset password!</Link>
+                    </div>
                 </Paper>
             </div>
         </div>
@@ -163,5 +157,24 @@ export function SignUp(props) {
 }
 
 export function ResetPassword(props){
-    
+    useEffect(() => {
+        return auth.onAuthStateChanged(u => {
+            if (u) {
+                props.history.push("/app");
+            }
+        });
+    }, [props.history]);
+    const resetPass = (preps) => {
+        auth.sendPasswordResetEmail('samheldin.1999@gmail.com').then(()=>{
+            console.log('Email send successfully!');
+        }).catch(()=>{
+            console.log('something went wrong!');
+        })
+    }
+    return (
+        <div>This is the reset PAGE!!!
+            <button onClick={resetPass}>click me to check me</button>
+        </div>
+
+    )
 }
