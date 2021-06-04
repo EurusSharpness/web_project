@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import {App } from "./App";
-import {SignUp, SignIn, ResetPassword} from "./components/LoginPage";
+import { SignIn, SignUp, App } from "./App";
 import { BrowserRouter, Route } from "react-router-dom";
 
 ReactDOM.render(
@@ -11,7 +10,6 @@ ReactDOM.render(
     <div>
       <Route exact path="/" component={SignIn} />
       <Route path="/signup" component={SignUp} />
-        <Route path="/resetpassword" component={ResetPassword}/>
       <Route path="/app" component={App} />
     </div>
   </BrowserRouter>,
