@@ -10,69 +10,69 @@ import {auth} from "./firebase";
 
 
 export function App(props) {
-  const [user, setUser] = useState(null);
-  const [drawer_open, setDrawerOpen] = useState(false);
+    const [user, setUser] = useState(null);
+    const [drawer_open, setDrawerOpen] = useState(false);
 
-  const handleCloseDrawer = () => {
-    setDrawerOpen(false);
-  };
+    const handleCloseDrawer = () => {
+        setDrawerOpen(false);
+    };
 
-  useEffect(() => {
-    return auth.onAuthStateChanged(u => {
-      if (u) {
-        setUser(u);
-      } else {
-        props.history.push("/");
-      }
-    });
-  }, [props.history]);
+    useEffect(() => {
+        return auth.onAuthStateChanged(u => {
+            if (u) {
+                setUser(u);
+            } else {
+                props.history.push("/");
+            }
+        });
+    }, [props.history]);
 
-  const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        props.history.push("/");
-      })
-      .catch(error => {
-        alert(error.message);
-      });
-  };
+    const handleSignOut = () => {
+        auth
+            .signOut()
+            .then(() => {
+                props.history.push("/");
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    };
 
-  if (!user) {
-    return <div />;
-  }
+    if (!user) {
+        return <div/>;
+    }
 
-  return (
-    <div>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={() => {
-              setDrawerOpen(true);
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            color="inherit"
-            variant="h6"
-            style={{ marginLeft: 15, flexGrow: 1 }}
-          >
-            My App
-          </Typography>
-          <Typography color="inherit" style={{ marginRight: 30 }}>
-            Hi! {user.email}
-          </Typography>
-          <Button color="inherit" onClick={handleSignOut}>
-            Sign out
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Drawer open={drawer_open} onClose={handleCloseDrawer}>
-        I'm a drawer
-      </Drawer>
-    </div>
-  );
+    return (
+        <div>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        onClick={() => {
+                            setDrawerOpen(true);
+                        }}
+                    >
+                        <MenuIcon/>
+                    </IconButton>
+                    <Typography
+                        color="inherit"
+                        variant="h6"
+                        style={{marginLeft: 15, flexGrow: 1}}
+                    >
+                        My App
+                    </Typography>
+                    <Typography color="inherit" style={{marginRight: 30}}>
+                        Hi! {user.email}
+                    </Typography>
+                    <Button color="inherit" onClick={handleSignOut}>
+                        Sign out
+                    </Button>
+                </Toolbar>
+            </AppBar>
+            <Drawer open={drawer_open} onClose={handleCloseDrawer}>
+                I'm a drawer
+            </Drawer>
+        </div>
+    );
 }

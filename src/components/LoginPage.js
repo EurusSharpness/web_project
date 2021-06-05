@@ -23,7 +23,8 @@ export function SignIn(props) {
     const handleSignIn = () => {
         auth
             .signInWithEmailAndPassword(email, password)
-            .then(() => {})
+            .then(() => {
+            })
             .catch(error => {
                 alert(error.message);
             });
@@ -38,8 +39,8 @@ export function SignIn(props) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-                <Paper style={{ width: "400px", marginTop: 30, padding: "40px" }}>
+            <div style={{display: "flex", justifyContent: "center"}}>
+                <Paper style={{width: "400px", marginTop: 30, padding: "40px"}}>
                     <TextField
                         fullWidth={true}
                         placeholder="email"
@@ -56,7 +57,10 @@ export function SignIn(props) {
                         onChange={e => {
                             setPassword(e.target.value);
                         }}
-                        style={{ marginTop: 20 }}
+                        onKeyDown={(key) => {
+                            if (key.key === 'Enter') handleSignIn();
+                        }}
+                        style={{marginTop: 20}}
                     />
                     <div
                         style={{
@@ -74,7 +78,7 @@ export function SignIn(props) {
                         </Button>
                     </div>
                     <div>
-                        Forgot your password? <Link to="/resetpassword">Reset password!</Link>
+                        Forgot your password? <Link to="/reset_password">Reset password!</Link>
                     </div>
                 </Paper>
             </div>
@@ -97,7 +101,8 @@ export function SignUp(props) {
     const handleSignUp = () => {
         auth
             .createUserWithEmailAndPassword(email, password)
-            .then(() => {})
+            .then(() => {
+            })
             .catch(error => {
                 alert(error.message);
             });
@@ -112,8 +117,8 @@ export function SignUp(props) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-                <Paper style={{ width: "400px", marginTop: 30, padding: "40px" }}>
+            <div style={{display: "flex", justifyContent: "center"}}>
+                <Paper style={{width: "400px", marginTop: 30, padding: "40px"}}>
                     <TextField
                         fullWidth={true}
                         placeholder="email"
@@ -130,7 +135,10 @@ export function SignUp(props) {
                         onChange={e => {
                             setPassword(e.target.value);
                         }}
-                        style={{ marginTop: 20 }}
+                        onKeyDown={(key) => {
+                            if (key.key === 'Enter') handleSignUp();
+                        }}
+                        style={{marginTop: 20}}
                     />
                     <div
                         style={{
@@ -148,7 +156,7 @@ export function SignUp(props) {
                         </Button>
                     </div>
                     <div>
-                        Forgot your password? <Link to="/resetpassword">Reset password!</Link>
+                        Forgot your password? <Link to="/reset_password">Reset password!</Link>
                     </div>
                 </Paper>
             </div>
@@ -156,7 +164,8 @@ export function SignUp(props) {
     );
 }
 
-export function ResetPassword(props){
+export function ResetPassword(props) {
+    const [email, setEmail] = useState("");
     useEffect(() => {
         return auth.onAuthStateChanged(u => {
             if (u) {
@@ -164,16 +173,48 @@ export function ResetPassword(props){
             }
         });
     }, [props.history]);
-    const resetPass = (preps) => {
-        auth.sendPasswordResetEmail('samheldin.1999@gmail.com').then(()=>{
-            console.log('Email send successfully!');
-        }).catch(()=>{
-            console.log('something went wrong!');
-        })
+    const handleResetPassword = () => {
+        console.log(email);
+        auth.sendPasswordResetEmail(email).then(() => {
+            alert('Email send successfully!');
+            props.history.push('/'); // Go back to Sign in page if the mail was successfully sent!
+        }).catch((e) => {
+            alert('something went wrong!\n' + e);
+        });
+
     }
     return (
-        <div>This is the reset PAGE!!!
-            <button onClick={resetPass}>click me to check me</button>
+        <div>
+            <AppBar position="static" color="primary">
+                <Toolbar>
+                    <Typography color="inherit" variant="h6">
+                        Reset Password
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <div style={{display: "flex", justifyContent: "center"}}>
+                <Paper style={{width: "400px", marginTop: 30, padding: "40px"}}>
+                    <TextField
+                        fullWidth={true}
+                        placeholder="email"
+                        value={email}
+                        onChange={e => {
+                            setEmail(e.target.value);
+                        }}
+                        onKeyDown={(key) => {
+                            if (key.key === 'Enter') handleResetPassword();
+                        }}
+                    />
+                    <Button style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginTop: "30px",
+                        alignItems: "center"
+                    }} color="primary" variant="contained" onClick={handleResetPassword}>
+                        Reset Password
+                    </Button>
+                </Paper>
+            </div>
         </div>
 
     )
